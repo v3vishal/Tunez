@@ -1,0 +1,56 @@
+{
+  "name": "brokendisc",
+  "version": "2.0.1",
+  "description": "",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/BlackKnight683/BrokenDisc#README",
+  "main": "src/index.js",
+  "private": true,
+  "author": {
+    "name": "blackknight683",
+    "url": "https://solonodes.xyz"
+  },
+  "scripts": {
+    "test": "echo \"error: no test specified\" && exit 1",
+    "start": "node src/index.js"
+  },
+  "engines": {
+    "npm": ">=7.0.0",
+    "node": ">=16.6.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/BlackKnight683/BrokenDisc.git"
+  },
+  "bugs": {
+    "url": "https://github.com/BlackKnight683/BrokenDisc/issues",
+    "email": "oofy@solonodes.xyz"
+  },
+  "keywords": [
+    "discord-bot",
+    "discord.js",
+    "discord-js",
+    "discord-music-bot",
+    "music-bot",
+    "djs-v13",
+    "discord-player"
+  ],
+  "dependencies": {
+    "@discord-player/extractor": "^4.4.4",
+    "@discordjs/builders": "^0.11.0",
+    "@discordjs/opus": "^0.9.0",
+    "@discordjs/voice": "^0.7.5",
+    "chalk": "^4.1.2",
+    "discord-player": "^6.6.4",
+    "discord.js": "^14.0.0",
+    "ffmpeg-static": "^4.4.0",
+    "glob": "^7.1.7",
+    "libsodium": "^0.7.13",
+    "mediaplex": "^0.0.8",
+    "opusscript": "^0.0.8",
+    "sodium-native": "^4.0.4",
+    "src": "^1.0.0",
+    "tweetnacl": "^1.0.3",
+    "ytdl-core": "^4.9.2"
+  }
+}
