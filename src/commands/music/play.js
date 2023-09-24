@@ -1,20 +1,23 @@
-const { Player } = require('discord-player');
 module.exports = {
-  name: "null",
-  description: "null",
+  name: "play",
+  description: "Play a song or playlist from url or name",
   category: "music",
-  usage: "null",
+  usage: "<song url/name>",
   options: [{
-    name: "null",
-    description: "null",
+    name: "song",
+    description: "The song name/url, you want to play.",
     type: 3,
     required: true
   }],
   async execute(bot, interaction) {
-    /*try {
-      const player = new Player(bot);
+    try {
+      console.log(bot.player.scanDeps());
+      bot.player.on('debug',console.log).events;
+        bot.player.on('debug',(_,m)=>console.log(m));
+
       const string = await interaction.options.getString("song", true);
-      const guildQueue = player.nodes.get(interaction.guild.id);
+
+      const guildQueue = bot.player.getQueue(interaction.guild.id);
 
       const channel = interaction.member?.voice?.channel;
 
@@ -63,8 +66,6 @@ module.exports = {
       if (!queue.playing) await queue.play();
     } catch (e) {
       console.log(e)
-      
     }
-    */
   }
 };

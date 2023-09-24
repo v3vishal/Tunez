@@ -1,29 +1,46 @@
-const { Player } = require('discord-player');
 module.exports = {
   name: "queue",
   description: "Shows the queue.",
   category: "music",
+  options: [{
+    name: "page",
+    description: "The page number of the queue",
+    type: 10,
+    required: false
+  }],
   async execute(bot, interaction) {
-    const player = new Player(bot);
-    const queue = player.nodes.get(interaction.guild.id);
+    let page = (await interaction.options.getNumber("page", false)) ?? 1;
 
-    if (!queue || !queue.node.isPlaying()) return bot.say.errorMessage(interaction, "I\'m currently not playing in this guild.");
+    const queue = bot.player.getQueue(interaction.guild.id);
 
-    if (!queue.tracks.length) return bot.say.warnMessage(interaction, "There is currently no song in the queue.");
+    if (!queue || !queue.playing)
+      return bot.say.errorMessage(interaction, "I’m currently not playing in this guild.");
 
-    const list = (queue.tracks.filter(track => track.url !== queue.node.isPlaying().url).map((track, i) => {
-      return `\`${i + 1}.\` [${track.title}](${track.url}) » \`${track.requestedBy.username}\`)`
-      }).slice(0, 10).join('\n'))
+    if (!queue.tracks.length)
+      return bot.say.warnMessage(interaction, "There is currently no song in the queue.");
+
+    const multiple = 10;
+
+    const maxPages = Math.ceil(queue.tracks.length / multiple);
+
+    if (page < 1 || page > maxPages) page = 1;
+
+    const end = page * multiple;
+    const start = end - multiple;
+
+    const tracks = queue.tracks.slice(start, end);
 
     const embed = bot.say.baseEmbed(interaction)
-      .setAuthor({name: `${interaction.guild.name}${queue.loopMode ? ' (looped)' : ''}`, icon_url: interaction.author.displayAvatarURL({dynamic: true}), url: `https://github.com/v3vishal/Tunez-OS`})
       .setDescription(
-        `Current Track: [${queue.currentTrack.title}](${queue.currentTrack.url}) » ${queue.currentTrack.requestedBy.username}\`\n\n${list}`
+        `${tracks.map((song, i) => 
+        `${start + (++i)} - [${song.title}](${song.url}) ~ [${song.requestedBy.toString()}]`
+        ).join("\n")}`
       )
       .setFooter(
-        `${queue.tracks.size} tracks in queue.`
+        `Page ${page} of ${maxPages} | song ${start + 1} to ${end > queue.tracks.length ? `${queue.tracks.length}` : `${end}`} of ${queue.tracks.length}`,
+        interaction.user.displayAvatarURL({ dynamic: true })
       );
 
-    return interaction.reply({ ephemeral: false, embeds: [embed] }).catch(console.error);
+    return interaction.reply({ ephemeral: true, embeds: [embed] }).catch(console.error);
   }
 };

@@ -1,13 +1,11 @@
-const { Player } = require('discord-player');
 module.exports = {
   name: "shuffle",
   description: "Shuffles the queue.",
   category: "music",
   execute(bot, interaction) {
-    const player = new Player(bot);
-    const queue = player.nodes.get(interaction.guild.id)
+    const queue = bot.player.getQueue(interaction.guild.id);
 
-    if (!queue || !queue.node.isPlaying())
+    if (!queue || !queue.playing)
       return bot.say.errorMessage(interaction, "I’m currently not playing in this guild.");
 
     if (!bot.utils.modifyQueue(interaction)) return;
@@ -15,7 +13,7 @@ module.exports = {
     if (queue.tracks.length < 3)
       return bot.say.warnMessage(interaction, "Need at least \`3\` songs in the queue to shuffle.");
 
-    queue.tracks.shuffle();
+    queue.shuffle();
 
     return bot.say.successMessage(interaction, "Shuffled the queue.");
   }
