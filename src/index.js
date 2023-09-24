@@ -1,8 +1,8 @@
 require("./modules/checkValid");
 
 const { Collection, Client, GatewayIntentBits } = require("discord.js");
-const { useMainPlayer, Player } = require("discord-player");
-const { YouTubeExtractor, SpotifyExtractor } = require('@discord-player/extractor');
+const { Player } = require("discord-player");
+
 const { botToken } = require("../config.json");
 const Logger = require("./modules/Logger");
 const Embeds = require("./modules/Embeds");
@@ -23,13 +23,15 @@ bot.logger = Logger;
 bot.utils = Util;
 bot.say = Embeds;
 
-bot.player = new Player(bot);
-
-// enables extractors
-const player = useMainPlayer();
-player.extractors.register(YouTubeExtractor);
-player.extractors.register(SpotifyExtractor);
+bot.player = new Player(bot, {
+  leaveOnEnd: true,
+  leaveOnStop: true,
+  leaveOnEmpty: true,
+  leaveOnEmptyCooldown: 60000,
+  autoSelfDeaf: true,
+  initialVolume: 100
+});
 
 require("./handler/EventHandler")(bot);
-const mySecret = process.env['tocken']
-bot.login(mySecret);
+
+bot.login(botToken);
