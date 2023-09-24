@@ -31,5 +31,5 @@ player.extractors.register(YouTubeExtractor);
 player.extractors.register(SpotifyExtractor);
 
 require("./handler/EventHandler")(bot);
-
-bot.login(botToken);
+const mySecret = process.env['tocken']
+bot.login(mySecret);
